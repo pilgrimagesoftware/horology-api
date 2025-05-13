@@ -81,13 +81,16 @@ jobs:
                       BUILD_SHA=${{ github.sha }}
                       BUILD_DATE=${{ steps.getbuilddate.outputs.isodate }}
                       BUILD_VERSION=${{ steps.previoustag.outputs.tag }}
-            # - name: Scan image
-            #   uses: sysdiglabs/scan-action@v1
-            #   with:
-            #     image-tag: registry.pilgrimagesoftware.com/horology-api:latest
-            #     sysdig-secure-token: ${{ secrets.SYSDIG_SECURE_TOKEN }}
+            - name: Scan image
+              uses: snyk/actions/docker@master
+              continue-on-error: true
+              env:
+                  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+              with:
+                  image: ghcr.io/pilgrimagesoftware/horology-api:latest
             - name: Create Sentry release
               uses: getsentry/action-release@v3
+              continue-on-error: true
               env:
                   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
                   SENTRY_ORG: ${{ vars.SENTRY_ORG }}
