@@ -1,4 +1,9 @@
 // swift-tools-version:6.1
+//
+//  Horology API
+//  Copyright © 2025 Pilgrimage Software. All rights reserved.
+//
+
 import PackageDescription
 
 let package = Package(
