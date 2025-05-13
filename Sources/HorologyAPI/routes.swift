@@ -1,11 +1,11 @@
+//
+//  routes.swift
+//  Horology API
+//  Copyright © 2025 Pilgrimage Software. All rights reserved.
+//
+
 import Vapor
 
 func routes(_ app: Application) throws {
-    app.get { req async throws in
-        try await req.view.render("index", ["title": "Hello Vapor!"])
-    }
-
-    app.get("hello") { req async -> String in
-        "Hello, world!"
-    }
+    app.register(collection: ConvertController())
 }
