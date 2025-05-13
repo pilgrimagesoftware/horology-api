@@ -5,7 +5,6 @@ let package = Package(
     name: "HorologyAPI",
     platforms: [
        .macOS(.v13),
-       .linux(.v5_4),
     ],
     dependencies: [
         // 💧 A server-side Swift web framework.
