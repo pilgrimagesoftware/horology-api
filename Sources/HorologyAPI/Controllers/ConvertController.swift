@@ -24,12 +24,12 @@ struct ConvertController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let convertRoute = routes.grouped("convert")
 
-        convertRoute.group("years", ":value") { years in
+        convertRoute.group("years") { years in
             years.get(use: toYears)
         }
     }
 
-    func toYears(req: Request) async throws -> Response {
+    func toYears(req: Request) async throws -> ConversionResponse {
         req.logger.info("Converting to years: \(req.url.path)")
 
         let conversion = try req.content.decode(ConversionRequest.self)
@@ -45,7 +45,7 @@ struct ConvertController: RouteCollection {
         }
 
         let response = ConversionResponse(value: value, approximate: result.approximate, message: nil)
-        return try await req.jsonResponse(response)
+        return response
     }
 
 }
