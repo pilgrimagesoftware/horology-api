@@ -32,7 +32,7 @@ jobs:
                     swift --version
             - name: Build
               run: |
-                    swift build -v
+                    swift build
             - name: Run tests
               run: |
-                    swift test -v
+                    swift test
