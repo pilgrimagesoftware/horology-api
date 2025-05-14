@@ -7,5 +7,5 @@
 import Vapor
 
 func routes(_ app: Application) throws {
-    app.register(collection: ConvertController())
+    try app.register(collection: ConvertController())
 }
