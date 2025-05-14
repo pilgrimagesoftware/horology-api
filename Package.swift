@@ -45,4 +45,5 @@ let package = Package(
 
 var swiftSettings: [SwiftSetting] { [
     .enableUpcomingFeature("ExistentialAny"),
+    .swiftLanguageMode(.v5),
 ] }
