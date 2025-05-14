@@ -8,6 +8,7 @@
 import VaporTesting
 import Testing
 
+
 @Suite("App Tests")
 struct HorologyAPITests {
     private func withApp(_ test: (Application) async throws -> ()) async throws {
@@ -23,10 +24,10 @@ struct HorologyAPITests {
         try await app.asyncShutdown()
     }
 
-    @Test("Test Hello World Route")
-    func helloWorld() async throws {
+    @Test("Test convert to years")
+    func convertToYears() async throws {
         try await withApp { app in
-            try await app.testing().test(.GET, "hello", afterResponse: { res async in
+            try await app.testing().test(.GET, "convert/years", afterResponse: { res async in
                 #expect(res.status == .ok)
                 #expect(res.body.string == "Hello, world!")
             })
