@@ -10,8 +10,7 @@ import HorologyCore
 
 struct ConversionRequest: Content {
     let value: Int
-    let from: String
-    let to: String
+    let unit: String
 }
 
 struct ConversionResponse: Content {
@@ -24,18 +23,26 @@ struct ConvertController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let convertRoute = routes.grouped("convert")
 
-        convertRoute.group("years") { years in
-            years.get(use: toYears)
+        convertRoute.group(":to") { to in
+            to.get(use: convertToHandler)
         }
     }
 
-    func toYears(req: Request) async throws -> ConversionResponse {
+    func convertToHandler(req: Request) async throws -> ConversionResponse {
         req.logger.info("Converting to years: \(req.url.path)")
+
+        guard let toValue = req.parameters.get("to") else {
+            throw Abort(.badRequest, reason: "Missing conversion type")
+        }
+        guard let to = ConversionValueType(rawValue: toValue) else {
+            throw Abort(.badRequest, reason: "Invalid conversion type")
+        }
 
         let conversion = try req.content.decode(ConversionRequest.self)
 
-        let to : ConversionValueType = .years
-        let from : ConversionValueType = .seconds // TODO: Get this from the request
+        guard let from = ConversionValueType(rawValue: conversion.unit) else {
+            throw Abort(.badRequest, reason: "Invalid unit")
+        }
 
         let converter = ValueConverter(value: conversion.value, valueType: from)
         let result = converter.convert(to: to)
