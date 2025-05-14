@@ -15,7 +15,7 @@ struct ConversionRequest: Content {
 }
 
 struct ConversionResponse: Content {
-    let value: Float
+    let value: Int
     let approximate: Bool
     let message: String?
 }
