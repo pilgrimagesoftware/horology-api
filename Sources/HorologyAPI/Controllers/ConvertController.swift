@@ -21,7 +21,7 @@ struct ConversionResponse: Content {
 }
 
 struct ConvertController: RouteCollection {
-    func boot(routes: RoutesBuilder) throws {
+    func boot(routes: any RoutesBuilder) throws {
         let convertRoute = routes.grouped("convert")
 
         convertRoute.group("years", ":value") { years in
