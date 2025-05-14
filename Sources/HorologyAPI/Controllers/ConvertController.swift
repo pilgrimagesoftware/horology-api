@@ -40,7 +40,11 @@ struct ConvertController: RouteCollection {
         let converter = ValueConverter(value: conversion.value, valueType: from)
         let result = converter.convert(to: to)
 
-        let response = ConversionResponse(value: result.value, approximate: result.approximate, message: nil)
+        guard let value = result.value else {
+            throw Abort(.badRequest, reason: "Invalid conversion")
+        }
+
+        let response = ConversionResponse(value: value, approximate: result.approximate, message: nil)
         return try await req.jsonResponse(response)
     }
 
