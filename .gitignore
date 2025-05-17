@@ -17,3 +17,5 @@ db.sqlite
 .env
 .env.*
 !.env.example
+Sources/HorologyAPI/Controllers/ConvertController.swift
+Package.resolved

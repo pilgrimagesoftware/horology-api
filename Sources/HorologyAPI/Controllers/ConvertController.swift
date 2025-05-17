@@ -44,14 +44,10 @@ struct ConvertController: RouteCollection {
             throw Abort(.badRequest, reason: "Invalid unit")
         }
 
-        let converter = ValueConverter(value: conversion.value, valueType: from)
-        let result = converter.convert(to: to)
+        let converter = try ValueConverter(value: conversion.value, valueType: from)
+        let result = try converter.convert(to: to)
 
-        guard let value = result.value else {
-            throw Abort(.badRequest, reason: "Invalid conversion")
-        }
-
-        let response = ConversionResponse(value: value, approximate: result.approximate, message: nil)
+        let response = ConversionResponse(value: result.value, approximate: result.approximate, message: nil)
         return response
     }
 
