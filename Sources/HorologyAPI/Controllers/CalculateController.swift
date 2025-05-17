@@ -7,7 +7,6 @@
 import HorologyCore
 import Vapor
 
-
 struct CalculateController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let calcRoute = routes.grouped("calculate")
@@ -19,7 +18,13 @@ struct CalculateController: RouteCollection {
         req.logger.info("Calculating: \(req.url.path)")
         let request = try req.content.decode(CalculationRequest.self)
 
-        let calendar = Calendar.from(identifier: request.calendar ?? "gregorian")
+        let calendar: Calendar
+        do {
+            calendar = try Calendar.from(identifier: request.calendar ?? "gregorian")
+        } catch {
+            req.logger.error("Failed to create calendar: \(error)")
+            throw Abort(.badRequest, reason: "Invalid calendar identifier")
+        }
 
         let startDate = makeDateFields(from: request.date)
         let adjustments = makeDateFields(from: request.adjustments)
