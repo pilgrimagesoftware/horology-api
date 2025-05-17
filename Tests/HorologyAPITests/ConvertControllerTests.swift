@@ -10,7 +10,7 @@ import VaporTesting
 @testable import HorologyAPI
 
 @Suite
-struct HorologyAPITests {
+struct ConvertControllerTests {
 
     private func withApp(_ test: (Application) async throws -> Void) async throws {
         let app = try await Application.make(.testing)
@@ -58,7 +58,7 @@ struct HorologyAPITests {
     }
 
     @Test
-    func convertToYears() async throws {
+    func testConvertToYears() async throws {
         try await withApp { app in
             try await app.testing().test(
                 .GET, "convert/years",
@@ -75,4 +75,5 @@ struct HorologyAPITests {
                 })
         }
     }
+
 }

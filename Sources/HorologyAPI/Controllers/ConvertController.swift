@@ -4,20 +4,8 @@
 //  Copyright © 2025 Pilgrimage Software. All rights reserved.
 //
 
-import Vapor
 import HorologyCore
-
-
-struct ConversionRequest: Content {
-    let value: Int
-    let unit: String
-}
-
-struct ConversionResponse: Content {
-    let value: Int
-    let approximate: Bool
-    let message: String?
-}
+import Vapor
 
 struct ConvertController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
@@ -29,7 +17,7 @@ struct ConvertController: RouteCollection {
     }
 
     func convertToHandler(req: Request) async throws -> ConversionResponse {
-        req.logger.info("Converting to years: \(req.url.path)")
+        req.logger.info("Converting: \(req.url.path)")
 
         guard let toValue = req.parameters.get("to") else {
             throw Abort(.badRequest, reason: "Missing conversion type")
@@ -47,7 +35,8 @@ struct ConvertController: RouteCollection {
         let converter = try ValueConverter(value: conversion.value, valueType: from)
         let result = try converter.convert(to: to)
 
-        let response = ConversionResponse(value: result.value, approximate: result.approximate, message: nil)
+        let response = ConversionResponse(
+            value: result.value, approximate: result.approximate, message: nil)
         return response
     }
 
