@@ -19,7 +19,7 @@ let package = Package(
         // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
         .package(
-            url: "https://github.com/pilgrimagesoftware/horology-core.swift.git", from: "0.0.17"),
+            url: "https://github.com/pilgrimagesoftware/horology-core.swift.git", from: "0.0.18"),
     ],
     targets: [
         .executableTarget(
