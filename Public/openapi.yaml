@@ -1,0 +1,141 @@
+openapi: '3.1.0'
+
+info:
+  title: HorologyService
+  version: 1.0.0
+
+servers:
+  - url: /api
+  - url: https://horology.cloud/api
+    description: Do things with dates and times.
+
+paths:
+  /status:
+    get:
+      operationId: status
+      responses:
+        '200':
+          description: Status endpoint.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+  /calculate:
+    get:
+      operationId: calculate
+      # parameters:
+      #   - name: name
+      #     required: false
+      #     in: query
+      #     description: The name used in the returned greeting.
+      #     schema:
+      #       type: string
+      responses:
+        '200':
+          description: A success response with the resulting date.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculationResponse'
+  /calendars:
+    get:
+      operationId: getCalendars
+      responses:
+        '200':
+          description: Returns a list of supported calendar identifiers.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarIdList'
+
+components:
+  schemas:
+    CalendarIdList:
+      type: array
+      items:
+        type: string
+
+    StatusResponse:
+      type: object
+      description: Status response.
+      properties:
+        date:
+          type: string
+        hostname:
+          type: string
+
+    DateFields:
+      type: object
+      description: A collection of DateTimeField values representing each of the components of a date.
+      properties:
+        year:
+          $ref: '#/components/schemas/DateTimeField'
+        month:
+          $ref: '#/components/schemas/DateTimeField'
+        day:
+          $ref: '#/components/schemas/DateTimeField'
+        hour:
+          $ref: '#/components/schemas/DateTimeField'
+        minute:
+          $ref: '#/components/schemas/DateTimeField'
+        second:
+          $ref: '#/components/schemas/DateTimeField'
+
+    DateTimeField:
+      type: object
+      description: A specific field for date/time values.
+      properties:
+        type:
+          type: string
+        value:
+          type: integer
+
+    DateComponents:
+      type: object
+      description: Individual values that make up a date
+      properties:
+        year:
+          type: integer
+        month:
+          type: integer
+        day:
+          type: integer
+        hour:
+          type: integer
+        minute:
+          type: integer
+        second:
+          type: integer
+
+    CalculationRequest:
+      type: object
+      description: A value with the greeting contents.
+      properties:
+        date:
+          $ref: '#/components/schemas/DateFields'
+          description: The starting date on which to perform the calculation.
+        adjustments:
+          $ref: '#/components/schemas/DateFields'
+          description: The adjustments to make to the date to determine the resulting date.
+        calendar:
+          type: string
+          description: The name of the calendar
+        mode:
+          type: string
+          description: |
+            The mode for performing the calculation. This will determine whether
+            the date, time, or both sets of components will be used.
+          pattern: '^(dateOnly|timeOnly|dateAndTime)$'
+      required:
+        - date
+        - adjustments
+        - mode
+
+    CalculationResponse:
+      type: object
+      description: Response object from a calculation request.
+      properties:
+        date:
+          type: string
+        components:
+          $ref: '#/components/schemas/DateComponents'
