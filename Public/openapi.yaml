@@ -23,13 +23,13 @@ paths:
   /calculate:
     get:
       operationId: calculate
-      # parameters:
-      #   - name: name
-      #     required: false
-      #     in: query
-      #     description: The name used in the returned greeting.
-      #     schema:
-      #       type: string
+      requestBody:
+        description: The date information to calculate.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculationRequest'
+        required: true
       responses:
         '200':
           description: A success response with the resulting date.
@@ -37,6 +37,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CalculationResponse'
+        '400':
+          description: An error response if the request could not be processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /compare:
+    get:
+      operationId: compare
+      requestBody:
+        description: The dates to compare.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComparisonRequest'
+        required: true
+      responses:
+        '200':
+          description: A success response with the resulting difference.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComparisonResponse'
+        '400':
+          description: An error response if the request could not be processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /convert/{to}:
+    get:
+      operationId: convert
+      parameters:
+        - in: path
+          name: to
+          schema:
+            type: string
+          required: true
+          description: The unit value to convert to.
+      requestBody:
+        description: The date component to convert.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversionRequest'
+        required: true
+      responses:
+        '200':
+          description: A success response with the resulting conversion values.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversionResponse'
+        '400':
+          description: An error response if the request could not be processed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /calendars:
     get:
       operationId: getCalendars
@@ -50,6 +110,15 @@ paths:
 
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      description: Standard response body for errors.
+      properties:
+        code:
+          type: string
+        reason:
+          type: string
+
     CalendarIdList:
       type: array
       items:
@@ -109,7 +178,7 @@ components:
 
     CalculationRequest:
       type: object
-      description: A value with the greeting contents.
+      description: An object specificying the date and adjustments to calculate.
       properties:
         date:
           $ref: '#/components/schemas/DateFields'
@@ -125,7 +194,10 @@ components:
           description: |
             The mode for performing the calculation. This will determine whether
             the date, time, or both sets of components will be used.
-          pattern: '^(dateOnly|timeOnly|dateAndTime)$'
+          enum:
+            - dateOnly
+            - timeOnly
+            - dateAndTime
       required:
         - date
         - adjustments
@@ -139,3 +211,58 @@ components:
           type: string
         components:
           $ref: '#/components/schemas/DateComponents'
+
+    ComparisonRequest:
+      type: object
+      description: An object specifying the two dates to compare.
+      properties:
+        fromDate:
+          $ref: '#/components/schemas/DateFields'
+        toDate:
+          $ref: '#/components/schemas/DateFields'
+        calendar:
+          type: string
+          description: |
+            The identifier of the calendar to use. If not specified, the Gregorian calendar is
+            used. See the '/calendars' endpoint for acquiring a list of valid, supported
+            calendar identifiers.
+        mode:
+          type: string
+          enum:
+            - dateOnly
+            - timeOnly
+            - dateAndTime
+      required:
+        - fromDate
+        - toDate
+        - mode
+
+    ComparisonResponse:
+      type: object
+      description: Response object from a comparison request.
+      properties:
+        difference:
+          $ref: '#/components/schemas/DateFields'
+
+    ConversionRequest:
+      type: object
+      description: An object specifying the date component value to convert.
+      properties:
+        value:
+          type: integer
+        unit:
+          type: string
+
+    ConversionResponse:
+      type: object
+      description: Response object from a conversion request.
+      properties:
+        value:
+          type: integer
+        approximate:
+          type: boolean
+        message:
+          type: string
+      required:
+        - value
+        - approximate

@@ -1,17 +1,17 @@
-// //
-// //  HorologyAPITests.swift
-// //  Horology API
-// //  Copyright © 2025 Pilgrimage Software. All rights reserved.
-// //
+//
+//  HorologyAPITests.swift
+//  Horology API
+//  Copyright © 2025 Pilgrimage Software. All rights reserved.
+//
 
-// import HorologyCore
-// import Testing
-// import VaporTesting
+import HorologyCore
+import Testing
+import VaporTesting
 
-// @testable import HorologyAPI
+@testable import HorologyAPI
 
-// @Suite
-// struct CalculateControllerTests {
+@Suite
+struct CalculateTests {
 
 //     private let fromDate = HorologyAPI.DateFields(
 //         year: DateTimeField(
@@ -51,8 +51,10 @@
 //         try await app.asyncShutdown()
 //     }
 
-//     @Test
-//     func testCalculate() async throws {
+    @Test
+    func testCalculate() async throws {
+        let handler = HorologyService()
+        // let response = try await handler.calculate( .init())
 //         try await withApp { app in
 //             try await app.testing().test(
 //                 .GET, "calculate",
@@ -77,7 +79,7 @@
 //                     #expect(resp.components.second == 0)
 //                 })
 //         }
-//     }
+    }
 
 //     @Test
 //     func testInvalidCalendarIdentifier() async throws {
@@ -125,4 +127,4 @@
 //         }
 //     }
 
-// }
+}

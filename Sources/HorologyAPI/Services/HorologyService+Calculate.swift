@@ -12,6 +12,8 @@ import Vapor
 extension HorologyService {
       func calculate(_ input: Operations.Calculate.Input) async throws -> Operations.Calculate.Output
     {
+
+
         let response = Components.Schemas.CalculationResponse()
         return .ok(.init(body: .json(response)))
     }

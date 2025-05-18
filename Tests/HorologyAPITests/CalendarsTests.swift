@@ -1,5 +1,5 @@
 //
-//  HorologyAPITests.swift
+//  CalendarsTests.swift
 //  Horology API
 //  Copyright © 2025 Pilgrimage Software. All rights reserved.
 //
@@ -16,6 +16,6 @@ struct CalendarsTests {
     func testCalendarList() async throws {
         let handler = HorologyService()
         let response = try await handler.getCalendars()
-        #expect(response.ok.body.json.count > 0)
+        #expect(try response.ok.body.json.count > 0)
     }
 }
