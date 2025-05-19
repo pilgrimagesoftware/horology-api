@@ -8,4 +8,5 @@ enum ErrorCodes : String {
     case invalidUnit = "invalid_unit"
     case serialization = "serialization"
     case invalidCalendar = "invalid_calendar"
+    case invalidDate = "invalid_date"
 }
