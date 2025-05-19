@@ -136,12 +136,66 @@ struct CompareControllerTests {
     }
 
     @Test
-    func testInvalidToDate() async throws {}
+    func testInvalidToDate() async throws {
 
-    @Test
-    func testInvalidFromTime() async throws {}
+        let handler = HorologyService()
+        let response = try await handler.compare(
+            body: .json(
+                .init(
+                    fromDate: fromDate,
+                    toDate: invalidDate,
+                    calendar: "gregorian",
+                    mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
 
-    @Test
-    func testInvalidToTime() async throws {}
+        guard case .json(let resp) = try response.badRequest.body else {
+            Issue.record("Response should have returned an error")
+            return
+        }
+
+        #expect(resp.code == ErrorCodes.invalidDate.rawValue)
+        #expect(resp.reason?.count ?? 0 > 0)
+    }
+
+    // @Test
+    // func testInvalidFromTime() async throws {
+
+    //     let handler = HorologyService()
+    //     let response = try await handler.compare(
+    //         body: .json(
+    //             .init(
+    //                 fromDate: invalidTime,
+    //                 toDate: toDate,
+    //                 calendar: "gregorian",
+    //                 mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
+
+    //     guard case .json(let resp) = try response.badRequest.body else {
+    //         Issue.record("Response should have returned an error")
+    //         return
+    //     }
+
+    //     #expect(resp.code == ErrorCodes.invalidDate.rawValue)
+    //     #expect(resp.reason?.count ?? 0 > 0)
+    // }
+
+    // @Test
+    // func testInvalidToTime() async throws {
+
+    //     let handler = HorologyService()
+    //     let response = try await handler.compare(
+    //         body: .json(
+    //             .init(
+    //                 fromDate: fromDate,
+    //                 toDate: invalidTime,
+    //                 calendar: "gregorian",
+    //                 mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
+
+    //     guard case .json(let resp) = try response.badRequest.body else {
+    //         Issue.record("Response should have returned an error")
+    //         return
+    //     }
+
+    //     #expect(resp.code == ErrorCodes.invalidDate.rawValue)
+    //     #expect(resp.reason?.count ?? 0 > 0)
+    // }
 
 }
