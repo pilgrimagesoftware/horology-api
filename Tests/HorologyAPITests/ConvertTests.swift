@@ -16,7 +16,6 @@ struct ConvertControllerTests {
     func testInvalidType() async throws {
 
         let handler = HorologyService()
-
         let response = try await handler.convert(
             path: .init(to: "invalid"),
             body: .json(.init(value: 1, unit: "months")))
