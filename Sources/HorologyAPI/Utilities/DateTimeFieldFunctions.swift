@@ -6,7 +6,7 @@
 
 import HorologyCore
 
-func makeDateTimeField(from content: Components.Schemas.DateTimeField) -> HorologyCore.DateTimeField? {
+func makeDateTimeField(fromContent content: Components.Schemas.DateTimeField) -> HorologyCore.DateTimeField? {
     switch content._type {
     case "year", "month", "day", "hour", "minute", "second":
         guard
@@ -16,4 +16,10 @@ func makeDateTimeField(from content: Components.Schemas.DateTimeField) -> Horolo
     default:
         return nil
     }
+}
+
+func makeDateTimeField(fromComponent component: Int?, type: String) -> Components.Schemas.DateTimeField? {
+    guard let component else { return nil }
+
+    return Components.Schemas.DateTimeField(_type: type, value: component)
 }

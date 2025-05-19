@@ -1,64 +1,104 @@
-// //
-// //  HorologyAPITests.swift
-// //  Horology API
-// //  Copyright © 2025 Pilgrimage Software. All rights reserved.
-// //
+//
+//  HorologyAPITests.swift
+//  Horology API
+//  Copyright © 2025 Pilgrimage Software. All rights reserved.
+//
 
-// import Testing
-// import VaporTesting
+import HorologyCore
+import Testing
+import VaporTesting
 
-// @testable import HorologyAPI
+@testable import HorologyAPI
 
-// @Suite
-// struct CompareControllerTests {
+@Suite
+struct CompareControllerTests {
 
-//     private func withApp(_ test: (Application) async throws -> Void) async throws {
-//         let app = try await Application.make(.testing)
-//         do {
-//             try await configure(app)
-//             try await test(app)
-//         } catch {
-//             try await app.asyncShutdown()
-//             throw error
-//         }
-//         try await app.asyncShutdown()
-//     }
+    private let fromDate = Components.Schemas.DateFields(
+        year: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.year.rawValue, value: 2023),
+        month: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.month.rawValue, value: 10),
+        day: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.day.rawValue, value: 1),
+        hour: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.hour.rawValue, value: 0),
+        minute: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.minute.rawValue, value: 0),
+        second: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.second.rawValue, value: 0))
+    private let toDate = Components.Schemas.DateFields(
+        year: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.year.rawValue, value: 2024),
+        month: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.month.rawValue, value: 11),
+        day: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.day.rawValue, value: 1),
+        hour: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.hour.rawValue, value: 0),
+        minute: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.minute.rawValue, value: 0),
+        second: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.second.rawValue, value: 0))
 
-//      @Test
-//     func testCompare() async throws {
-//         // try await withApp { app in
-//         //     try await app.testing().test(
-//         //         .GET, "compare",
-//         //         beforeRequest: { req in
-//         //             try req.content.encode(ConversionRequest(value: 12, unit: "months"))
-//         //         },
-//         //         afterResponse: { res async throws in
-//         //             #expect(res.status == .ok)
-//         //             #expect(res.headers.contentType == .json)
-//         //             let resp = try res.content.decode(ConversionResponse.self)
-//         //             #expect(resp.value == 1)
-//         //             #expect(resp.approximate == false)
-//         //             #expect(resp.message == nil)
-//         //         })
-//         // }
-//     }
+    @Test
+    func testCompare() async throws {
 
-//     @Test
-//     func testInvalidCalendar() async throws {}
+        let handler = HorologyService()
+        let response = try await handler.compare(
+            body: .json(
+                .init(
+                    fromDate: fromDate,
+                    toDate: toDate,
+                    calendar: "gregorian",
+                    mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
 
-//     @Test
-//     func testInvalidMode() async throws {}
+        guard case .json(let resp) = try response.ok.body else {
+            Issue.record("Unexpected response body")
+            return
+        }
 
-//     @Test
-//     func testInvalidFromDate() async throws {}
+        #require(resp.difference.year?.value == 1)
+        #require(resp.difference.month?.value == 1)
+        #require(resp.difference.day?.value == 0)
+        #require(resp.difference.hour?.value == 0)
+        #require(resp.difference.minute?.value == 1)
+        #require(resp.difference.second?.value == 0)
+    }
 
-//     @Test
-//     func testInvalidToDate() async throws {}
+    @Test
+    func testInvalidCalendar() async throws {
 
-//     @Test
-//     func testInvalidFromTime() async throws {}
+        let handler = HorologyService()
+        let response = try await handler.compare(
+            body: .json(
+                .init(
+                    fromDate: fromDate,
+                    toDate: toDate,
+                    calendar: "gregorian",
+                    mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
 
-//     @Test
-//     func testInvalidToTime() async throws {}
+        guard case .json(let resp) = try response.badRequest.body else {
+            Issue.record("Response should have returned an error")
+            return
+        }
 
-// }
+        #expect(resp.code == ErrorCodes.invalidCalendar.rawValue)
+        #expect(resp.reason == "")
+    }
+
+    @Test
+    func testInvalidMode() async throws {}
+
+    @Test
+    func testInvalidFromDate() async throws {}
+
+    @Test
+    func testInvalidToDate() async throws {}
+
+    @Test
+    func testInvalidFromTime() async throws {}
+
+    @Test
+    func testInvalidToTime() async throws {}
+
+}

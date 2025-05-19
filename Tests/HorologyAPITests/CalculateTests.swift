@@ -84,27 +84,24 @@ struct CalculateTests {
         #expect(resp.reason == "")
     }
 
-    @Test
-    func testCalculateInvalidMode() async throws {
-        //         try await withApp { app in
-        //             try await app.testing().test(
-        //                 .GET, "calculate",
-        //                 beforeRequest: { req in
-        //                     try req.content.encode(
-        //                         CalculationRequest(
-        //                             date: fromDate,
-        //                             adjustments: adjustments,
-        //                             calendar: "gregorian",
-        //                             mode: "invalid_mode"))
-        //                 },
-        //                 afterResponse: { res async throws in
-        //                     #expect(res.status == .badRequest)
-        //                     #expect(res.headers.contentType == .json)
-        //                     let resp = try res.content.decode(ErrorResponse.self)
-        //                     #expect(resp.error == true)
-        //                     #expect(resp.reason == "Invalid mode")
-        //                 })
-        //         }
-    }
+    // @Test
+    // func testCalculateInvalidMode() async throws {
+
+    //     let handler = HorologyService()
+    //     let response = try await handler.calculate(
+    //         body: .json(
+    //             .init(
+    //                 date: fromDate,
+    //                 adjustments: adjustments, calendar: "gregorian",
+    //                 mode: "invalid")))
+
+    //     guard case .json(let resp) = try response.badRequest.body else {
+    //         Issue.record("Response should have returned an error")
+    //         return
+    //     }
+
+    //     #expect(resp.code == ErrorCodes.invalidCalendar.rawValue)
+    //     #expect(resp.reason == "")
+    // }
 
 }
