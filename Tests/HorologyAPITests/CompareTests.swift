@@ -65,6 +65,7 @@ struct CompareControllerTests {
             _type: DateTimeFieldType.minute.rawValue, value: -4),
         second: Components.Schemas.DateTimeField(
             _type: DateTimeFieldType.second.rawValue, value: 0))
+
     @Test
     func testCompare() async throws {
 
