@@ -36,10 +36,35 @@ struct CompareControllerTests {
         hour: Components.Schemas.DateTimeField(
             _type: DateTimeFieldType.hour.rawValue, value: 0),
         minute: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.minute.rawValue, value: 1),
+        second: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.second.rawValue, value: 0))
+    private let invalidDate = Components.Schemas.DateFields(
+        year: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.year.rawValue, value: 2023),
+        month: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.month.rawValue, value: -10),
+        day: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.day.rawValue, value: 1),
+        hour: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.hour.rawValue, value: 0),
+        minute: Components.Schemas.DateTimeField(
             _type: DateTimeFieldType.minute.rawValue, value: 0),
         second: Components.Schemas.DateTimeField(
             _type: DateTimeFieldType.second.rawValue, value: 0))
-
+    private let invalidTime = Components.Schemas.DateFields(
+        year: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.year.rawValue, value: 2023),
+        month: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.month.rawValue, value: 10),
+        day: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.day.rawValue, value: 1),
+        hour: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.hour.rawValue, value: 0),
+        minute: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.minute.rawValue, value: -4),
+        second: Components.Schemas.DateTimeField(
+            _type: DateTimeFieldType.second.rawValue, value: 0))
     @Test
     func testCompare() async throws {
 
@@ -74,7 +99,7 @@ struct CompareControllerTests {
                 .init(
                     fromDate: fromDate,
                     toDate: toDate,
-                    calendar: "gregorian",
+                    calendar: "invalid",
                     mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
 
         guard case .json(let resp) = try response.badRequest.body else {
@@ -83,14 +108,32 @@ struct CompareControllerTests {
         }
 
         #expect(resp.code == ErrorCodes.invalidCalendar.rawValue)
-        #expect(resp.reason == "")
+        #expect(resp.reason?.count ?? 0 > 0)
     }
 
-    @Test
-    func testInvalidMode() async throws {}
+    // @Test
+    // func testInvalidMode() async throws {}
 
     @Test
-    func testInvalidFromDate() async throws {}
+    func testInvalidFromDate() async throws {
+
+        let handler = HorologyService()
+        let response = try await handler.compare(
+            body: .json(
+                .init(
+                    fromDate: invalidDate,
+                    toDate: toDate,
+                    calendar: "gregorian",
+                    mode: Components.Schemas.ComparisonRequest.ModePayload.dateAndTime)))
+
+        guard case .json(let resp) = try response.badRequest.body else {
+            Issue.record("Response should have returned an error")
+            return
+        }
+
+        #expect(resp.code == ErrorCodes.invalidDate.rawValue)
+        #expect(resp.reason?.count ?? 0 > 0)
+    }
 
     @Test
     func testInvalidToDate() async throws {}
