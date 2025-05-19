@@ -22,14 +22,14 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.7.0"),
         .package(url: "https://github.com/swift-server/swift-openapi-vapor", from: "1.0.0"),
         .package(
-            url: "https://github.com/pilgrimagesoftware/horology-core.swift.git", from: "0.0.19"),
+            url: "https://github.com/pilgrimagesoftware/horology-core.swift.git", from: "0.0.20"),
         .package(url: "https://github.com/apple/swift-metrics", from: "2.4.1"),
         .package(url: "https://github.com/swift-server/swift-prometheus", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-distributed-tracing", from: "1.0.1"),
         .package(
             url: "https://github.com/apple/swift-distributed-tracing-extras", exact: "1.0.0-beta.1"),
         .package(url: "https://github.com/swift-otel/swift-otel", .upToNextMinor(from: "0.10.1")),
-         .package(url: "https://github.com/apple/swift-http-types", from: "1.0.2"),
+        .package(url: "https://github.com/apple/swift-http-types", from: "1.0.2"),
         .package(url: "https://github.com/apple/swift-log", from: "1.5.3"),
     ],
     targets: [
@@ -50,7 +50,7 @@ let package = Package(
                     package: "swift-distributed-tracing-extras"),
             ]
         ),
-          .target(
+        .target(
             name: "LoggingMiddleware",
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
