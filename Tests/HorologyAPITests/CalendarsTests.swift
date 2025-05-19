@@ -18,4 +18,5 @@ struct CalendarsTests {
         let response = try await handler.getCalendars()
         #expect(try response.ok.body.json.count > 0)
     }
+
 }

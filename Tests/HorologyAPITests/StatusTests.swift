@@ -19,4 +19,5 @@ struct StatusTests {
         #expect(try response.ok.body.json.date != nil)
         #expect(try response.ok.body.json.hostname != nil)
     }
+
 }
