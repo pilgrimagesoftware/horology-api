@@ -28,7 +28,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-distributed-tracing", from: "1.0.1"),
         .package(
             url: "https://github.com/apple/swift-distributed-tracing-extras", exact: "1.0.0-beta.1"),
-        .package(url: "https://github.com/swift-otel/swift-otel", .upToNextMinor(from: "0.10.1")),
+        .package(url: "https://github.com/swift-otel/swift-otel", .upToNextMinor(from: "0.11.0")),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.0.2"),
         .package(url: "https://github.com/apple/swift-log", from: "1.5.3"),
     ],
