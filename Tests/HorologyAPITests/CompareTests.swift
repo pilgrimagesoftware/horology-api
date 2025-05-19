@@ -57,12 +57,12 @@ struct CompareControllerTests {
             return
         }
 
-        #require(resp.difference.year?.value == 1)
-        #require(resp.difference.month?.value == 1)
-        #require(resp.difference.day?.value == 0)
-        #require(resp.difference.hour?.value == 0)
-        #require(resp.difference.minute?.value == 1)
-        #require(resp.difference.second?.value == 0)
+        #expect(resp.difference.year?.value == 1)
+        #expect(resp.difference.month?.value == 1)
+        #expect(resp.difference.day?.value == 0)
+        #expect(resp.difference.hour?.value == 0)
+        #expect(resp.difference.minute?.value == 1)
+        #expect(resp.difference.second?.value == 0)
     }
 
     @Test
