@@ -158,6 +158,9 @@ components:
           type: string
         value:
           type: integer
+      required:
+        - type
+        - value
 
     DateComponents:
       type: object
@@ -211,6 +214,9 @@ components:
           type: string
         components:
           $ref: '#/components/schemas/DateComponents'
+      required:
+        - date
+        - components
 
     ComparisonRequest:
       type: object
@@ -243,6 +249,8 @@ components:
       properties:
         difference:
           $ref: '#/components/schemas/DateFields'
+      required:
+        - difference
 
     ConversionRequest:
       type: object
@@ -252,6 +260,9 @@ components:
           type: integer
         unit:
           type: string
+      required:
+        - value
+        - unit
 
     ConversionResponse:
       type: object
