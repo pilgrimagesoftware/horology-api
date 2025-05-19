@@ -21,9 +21,7 @@ extension HorologyService {
                             reason: "Invalid unit to convert to"))))
         }
 
-        guard case .json(let body) = input.body,
-            let unit = body.unit,
-            let value = body.value
+        guard case .json(let body) = input.body
         else {
             return .badRequest(
                 .init(
@@ -32,7 +30,7 @@ extension HorologyService {
             )
         }
 
-        guard let from = ConversionValueType(rawValue: unit) else {
+        guard let from = ConversionValueType(rawValue: body.unit) else {
             return .badRequest(
                 .init(
                     body: .json(
@@ -41,7 +39,7 @@ extension HorologyService {
                             reason: "Invalid unit to convert from"))))
         }
 
-        let converter = try ValueConverter(value: value, valueType: from)
+        let converter = try ValueConverter(value: body.value, valueType: from)
         let result = try converter.convert(to: to)
 
         let response = Components.Schemas.ConversionResponse(
