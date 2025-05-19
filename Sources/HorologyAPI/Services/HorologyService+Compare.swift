@@ -42,14 +42,18 @@ extension HorologyService {
             throw Abort(.badRequest, reason: "Invalid mode")
         }
 
-        let comparator = DateComparer(
-            firstDate: fromDate,
-            secondDate: toDate,
-            calendar: calendar
-        )
-        let result = try comparator.calculate(with: mode)
+        do {
+            let comparator = DateComparer(
+                firstDate: fromDate,
+                secondDate: toDate,
+                calendar: calendar
+            )
+            let result = try comparator.calculate(with: mode)
 
-        let response = Components.Schemas.ComparisonResponse(difference: makeDateFieldsFromDateComponents(result))
-        return .ok(.init(body: .json(response)))
+            let response = Components.Schemas.ComparisonResponse(difference: makeDateFieldsFromDateComponents(result))
+            return .ok(.init(body: .json(response)))
+        } catch {
+            return .badRequest(.init(body: .json(.init(code: ErrorCodes.invalidDate.rawValue, reason: "\(error)"))))
+        }
     }
 }
