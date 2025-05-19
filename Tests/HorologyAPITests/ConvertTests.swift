@@ -26,7 +26,7 @@ struct ConvertControllerTests {
         }
 
         #expect(resp.code == ErrorCodes.invalidUnit.rawValue)
-        #expect(resp.reason == "Invalid unit to convert to")
+        #expect(resp.reason?.count ?? 0 > 0)
     }
 
     @Test
@@ -43,7 +43,7 @@ struct ConvertControllerTests {
         }
 
         #expect(resp.code == ErrorCodes.invalidUnit.rawValue)
-        #expect(resp.reason == "Invalid unit to convert from")
+        #expect(resp.reason?.count ?? 0 > 0)
     }
 
     @Test

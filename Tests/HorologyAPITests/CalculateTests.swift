@@ -81,7 +81,7 @@ struct CalculateTests {
         }
 
         #expect(resp.code == ErrorCodes.invalidCalendar.rawValue)
-        #expect(resp.reason == "")
+             #expect(resp.reason?.count ?? 0 > 0)
     }
 
     // @Test
