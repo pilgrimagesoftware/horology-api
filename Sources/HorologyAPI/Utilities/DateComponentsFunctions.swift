@@ -21,11 +21,11 @@ func makeDateFieldsFromDateComponents(_ dateComponents: Foundation.DateComponent
     return Components.Schemas.DateFields(
         year: makeDateTimeField(fromComponent: dateComponents.year, type: HorologyCore.DateTimeFieldType.year.rawValue),
         month: makeDateTimeField(
-            fromComponent: dateComponents.year, type: HorologyCore.DateTimeFieldType.year.rawValue),
-        day: makeDateTimeField(fromComponent: dateComponents.year, type: HorologyCore.DateTimeFieldType.year.rawValue),
-        hour: makeDateTimeField(fromComponent: dateComponents.year, type: HorologyCore.DateTimeFieldType.year.rawValue),
+            fromComponent: dateComponents.month, type: HorologyCore.DateTimeFieldType.month.rawValue),
+        day: makeDateTimeField(fromComponent: dateComponents.day, type: HorologyCore.DateTimeFieldType.day.rawValue),
+        hour: makeDateTimeField(fromComponent: dateComponents.hour, type: HorologyCore.DateTimeFieldType.hour.rawValue),
         minute: makeDateTimeField(
-            fromComponent: dateComponents.year, type: HorologyCore.DateTimeFieldType.year.rawValue),
+            fromComponent: dateComponents.minute, type: HorologyCore.DateTimeFieldType.minute.rawValue),
         second: makeDateTimeField(
-            fromComponent: dateComponents.year, type: HorologyCore.DateTimeFieldType.year.rawValue))
+            fromComponent: dateComponents.second, type: HorologyCore.DateTimeFieldType.second.rawValue))
 }
