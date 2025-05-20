@@ -21,7 +21,7 @@ struct CalculateTests {
         day: Components.Schemas.DateTimeField(
             _type: DateTimeFieldType.day.rawValue, value: 1),
         hour: Components.Schemas.DateTimeField(
-            _type: DateTimeFieldType.hour.rawValue, value: 0),
+            _type: DateTimeFieldType.hour.rawValue, value: 7),
         minute: Components.Schemas.DateTimeField(
             _type: DateTimeFieldType.minute.rawValue, value: 0),
         second: Components.Schemas.DateTimeField(
