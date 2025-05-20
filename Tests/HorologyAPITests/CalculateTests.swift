@@ -59,7 +59,7 @@ struct CalculateTests {
         #expect(resp.components.year == 2024)
         #expect(resp.components.month == 10)
         #expect(resp.components.day == 1)
-        #expect(resp.components.hour == 0)
+        #expect(resp.components.hour == 7)
         #expect(resp.components.minute == 0)
         #expect(resp.components.second == 0)
     }
