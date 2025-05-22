@@ -47,7 +47,7 @@ jobs:
               uses: docker/metadata-action@v5
               with:
                   images: |
-                      ghcr.io/pilgrimagesoftware/horology-api
+                      ghcr.io/${{ github.repository }}
                   tags: |
                       type=raw,value=latest
                       type=raw,value=${{ steps.previoustag.outputs.tag }}
