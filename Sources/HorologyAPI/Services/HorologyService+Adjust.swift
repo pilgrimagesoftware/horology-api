@@ -11,7 +11,7 @@ import OpenAPIVapor
 import Vapor
 
 extension HorologyService {
-    func calculate(_ input: Operations.Calculate.Input) async throws -> Operations.Calculate.Output {
+    func adjust(_ input: Operations.Adjust.Input) async throws -> Operations.Adjust.Output {
         guard case .json(let body) = input.body
         else {
             return .badRequest(
@@ -49,7 +49,7 @@ extension HorologyService {
             calendar: calendar)
         let result = try calculator.calculateDate(with: mode)
 
-        let response = Components.Schemas.CalculationResponse(
+        let response = Components.Schemas.AdjustmentResponse(
             date: result.formatted(.iso8601),
             components: makeContentFromDateComponents(
                 calendar.dateComponents(

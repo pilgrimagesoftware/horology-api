@@ -20,15 +20,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StatusResponse'
-  /calculate:
+  /adjust:
     get:
-      operationId: calculate
+      operationId: adjust
       requestBody:
-        description: The date information to calculate.
+        description: The date information to adjust.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CalculationRequest'
+              $ref: '#/components/schemas/AdjustmentRequest'
         required: true
       responses:
         '200':
@@ -36,7 +36,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CalculationResponse'
+                $ref: '#/components/schemas/AdjustmentResponse'
         '400':
           description: An error response if the request could not be processed.
           content:
@@ -179,13 +179,13 @@ components:
         second:
           type: integer
 
-    CalculationRequest:
+    AdjustmentRequest:
       type: object
-      description: An object specificying the date and adjustments to calculate.
+      description: An object specificying the date and adjustments to use.
       properties:
         date:
           $ref: '#/components/schemas/DateFields'
-          description: The starting date on which to perform the calculation.
+          description: The starting date on which to perform the adjustment.
         adjustments:
           $ref: '#/components/schemas/DateFields'
           description: The adjustments to make to the date to determine the resulting date.
@@ -195,7 +195,7 @@ components:
         mode:
           type: string
           description: |
-            The mode for performing the calculation. This will determine whether
+            The mode for performing the adjustment. This will determine whether
             the date, time, or both sets of components will be used.
           enum:
             - dateOnly
@@ -206,9 +206,9 @@ components:
         - adjustments
         - mode
 
-    CalculationResponse:
+    AdjustmentResponse:
       type: object
-      description: Response object from a calculation request.
+      description: Response object from an adjustment request.
       properties:
         date:
           type: string

@@ -11,7 +11,7 @@ import VaporTesting
 @testable import HorologyAPI
 
 @Suite
-struct CalculateTests {
+struct AdjustmentTests {
 
     private let fromDate = Components.Schemas.DateFields(
         year: Components.Schemas.DateTimeField(
@@ -43,12 +43,12 @@ struct CalculateTests {
     func testCalculate() async throws {
 
         let handler = HorologyService()
-        let response = try await handler.calculate(
+        let response = try await handler.adjust(
             body: .json(
                 .init(
                     date: fromDate,
                     adjustments: adjustments, calendar: "gregorian",
-                    mode: Components.Schemas.CalculationRequest.ModePayload.dateAndTime)))
+                    mode: Components.Schemas.AdjustmentRequest.ModePayload.dateAndTime)))
 
         guard case .json(let resp) = try response.ok.body else {
             Issue.record("Unexpected response body")
@@ -68,12 +68,12 @@ struct CalculateTests {
     func testInvalidCalendarIdentifier() async throws {
 
         let handler = HorologyService()
-        let response = try await handler.calculate(
+        let response = try await handler.adjust(
             body: .json(
                 .init(
                     date: fromDate,
                     adjustments: adjustments, calendar: "invalid",
-                    mode: Components.Schemas.CalculationRequest.ModePayload.dateAndTime)))
+                    mode: Components.Schemas.AdjustmentRequest.ModePayload.dateAndTime)))
 
         guard case .json(let resp) = try response.badRequest.body else {
             Issue.record("Response should have returned an error")
