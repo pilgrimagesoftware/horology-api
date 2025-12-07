@@ -25,7 +25,7 @@ jobs:
         outputs:
             swift-version: ${{ steps.get_swift_version.outputs.swift_version }}
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
             - name: Get swift version
               id: get_swift_version
               run: |
@@ -43,7 +43,7 @@ jobs:
                     - name: Linux
                       os: ubuntu-24.04
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
             - uses: swift-actions/setup-swift@v2
               with:
                 swift-version: ${{ needs.setup.outputs.swift-version }}
@@ -63,7 +63,7 @@ jobs:
         continue-on-error: true
         concurrency: docs
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
             - uses: swift-actions/setup-swift@v2
               with:
                 swift-version: ${{ needs.setup.outputs.swift-version }}
@@ -92,7 +92,7 @@ jobs:
         permissions:
             contents: write
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
               with:
                   fetch-depth: 0
             - name: Bump version and push tag
@@ -107,7 +107,7 @@ jobs:
         runs-on: ubuntu-latest
         concurrency: publish
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@v6
               with:
                 fetch-depth: 0
             - name: Get latest tag
